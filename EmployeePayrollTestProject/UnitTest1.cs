@@ -55,5 +55,48 @@ namespace EmployeePayrollTestProject
             }
 
         }
+        /// <summary>
+        /// Method to add a json object to json server
+        /// </summary>
+        public IRestResponse AddEmployeeToJsonServer(JsonObject json)
+        {
+            RestRequest request = new RestRequest("/employees", Method.POST);
+            //adding type as json in request and pasing the json object as a body of request
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+
+            //Execute the request
+            IRestResponse response = client.Execute(request);
+            return response;
+
+        }
+        /// <summary>
+        /// Test method to add a new employee to json server
+        /// </summary>
+        [TestMethod]
+        public void TestMethodToAddEmployeeToJsonServer()
+        {
+            try 
+            { 
+            //Setting rest rquest to url and setiing method to post
+            RestRequest request = new RestRequest("/employees", Method.POST);
+            //object for json
+            JsonObject json = new JsonObject();
+            //Adding new employee details to json object
+            json.Add("name", "Neymar");
+            json.Add("salary", 13000);
+
+            //calling method to add to server
+            IRestResponse response = AddEmployeeToJsonServer(json);
+            //deserialize json object to  class  object
+            var res = JsonConvert.DeserializeObject<Employee>(response.Content);
+
+            //Checking the response statuscode 201-created
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
