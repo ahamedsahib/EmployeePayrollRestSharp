@@ -24,6 +24,16 @@
       "name": "Neymar",
       "salary": 13000,
       "id": 5
+    },
+    {
+      "name": "ABC",
+      "salary": 53000,
+      "id": 6
+    },
+    {
+      "name": "Sakoor",
+      "salary": 35000,
+      "id": 7
     }
   ]
 }

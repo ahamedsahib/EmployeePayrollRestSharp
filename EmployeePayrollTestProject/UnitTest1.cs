@@ -72,7 +72,7 @@ namespace EmployeePayrollTestProject
         /// <summary>
         /// Test method to add a new employee to json server
         /// </summary>
-        [TestMethod]
+        //[TestMethod]
         public void TestMethodToAddEmployeeToJsonServer()
         {
             try 
@@ -97,6 +97,44 @@ namespace EmployeePayrollTestProject
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+        /// <summary>
+        /// test Method to add multiple data to json server
+        /// </summary>
+        [TestMethod]
+        public void TestForAddMultipleEmployeeDataToJsonServer()
+        {
+            try
+            {
+                //list for storing multiple employeee data json objects
+                List<JsonObject> employeeList = new List<JsonObject>();
+                JsonObject json = new JsonObject();
+                json.Add("name", "ABC");
+                json.Add("salary", 53000);
+                //add object to list
+                employeeList.Add(json);
+                JsonObject json1 = new JsonObject();
+                json1.Add("name", "Sakoor");
+                json1.Add("salary", 35000);
+                employeeList.Add(json1);
+
+                employeeList.ForEach((x) =>
+                {
+                    AddEmployeeToJsonServer(x);
+                });
+                //Check by gettting all employee details
+                IRestResponse response = GetAllEmployee();
+                //convert json object to employee object
+                var res = JsonConvert.DeserializeObject<List<Employee>>(response.Content);
+
+                //Checking the response statuscode 200-ok
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
     }
 }
