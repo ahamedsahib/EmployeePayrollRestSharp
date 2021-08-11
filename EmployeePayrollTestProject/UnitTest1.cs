@@ -101,7 +101,7 @@ namespace EmployeePayrollTestProject
         /// <summary>
         /// test Method to add multiple data to json server
         /// </summary>
-        [TestMethod]
+        //[TestMethod]
         public void TestForAddMultipleEmployeeDataToJsonServer()
         {
             try
@@ -136,5 +136,36 @@ namespace EmployeePayrollTestProject
             }
 
         }
+        /// <summary>
+        /// test method to update details ofExisitingEmployee
+        /// </summary>
+        [TestMethod]
+        public void TestMethodToUpdateDetailsofExisitingEmployee()
+        {
+            try
+            {
+                //Setting rest request to url and setiing method to put to update details
+                RestRequest request = new RestRequest("/employees/6", Method.PUT);
+                //object for json
+                JsonObject json = new JsonObject();
+                //Adding new employee details to json object
+                json.Add("name", "Kaka");
+                json.Add("salary", 20000);
+                //adding type as json in request and pasing the json object as a body of request
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                //execute the request
+                IRestResponse response = client.Execute(request);
+                //deserialize json object to  class  object
+                var res = JsonConvert.DeserializeObject<Employee>(response.Content);
+
+                //Checking the response statuscode 200  - ok
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
     }
 }
