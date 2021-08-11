@@ -166,6 +166,33 @@ namespace EmployeePayrollTestProject
                 Console.WriteLine(ex.Message);
             }
         }
+        /// <summary>
+        /// test method to delete detail based on id
+        /// </summary>
+        [TestMethod]
+        public void TestMethodToDeleteDetails()
+        {
+            try
+            {
+                //Setting rest request to url and setiing method to delete to delete particular id
+                RestRequest request = new RestRequest("/employees/7", Method.DELETE);
+
+                //execute the request
+                IRestResponse response = client.Execute(request);
+
+                //Check by gettting all employee details
+                IRestResponse restResponse = GetAllEmployee();
+                //convert json object to Class object
+                var res = JsonConvert.DeserializeObject<List<Employee>>(restResponse.Content);
+
+                //Checking the response statuscode 200-ok
+                Assert.AreEqual(HttpStatusCode.OK, restResponse.StatusCode);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
 
     }
 }
